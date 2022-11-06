@@ -3,8 +3,11 @@ import { createBrowserRouter, createRoutesFromElements, Route } from 'react-rout
 import About from '../pages/About';
 import Error from '../pages/Error';
 import Home from '../pages/Home/Home';
-import Login from '../pages/Login';
-import SignUp from '../pages/SignUp';
+import Products from '../pages/Products/Products';
+
+import SignIn from '../pages/authentication/SignIn';
+import SignUp from '../pages/authentication/SignUp';
+import PrivateRoute from './ProtectedRoute';
 import Root from './Root';
 
 const router = createBrowserRouter(
@@ -12,8 +15,17 @@ const router = createBrowserRouter(
         <Route path="/" element={<Root />} errorElement={<Error />}>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
+            <Route
+                path="/products"
+                element={
+                    <PrivateRoute>
+                        <Products />
+                    </PrivateRoute>
+                }
+                loader={async () => fetch('https://comix-server.vercel.app/products')}
+            />
             <Route path="/Signup" element={<SignUp />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/login" element={<SignIn />} />
         </Route>
     )
 );
