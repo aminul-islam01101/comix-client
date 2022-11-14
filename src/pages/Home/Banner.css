@@ -1,0 +1,53 @@
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+
+}
+
+body {
+  font-family: system-ui;
+  margin: 0;
+}
+
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
+}
+
+h3,
+footer {
+  color: #b8c1ec;
+
+  padding: 1rem;
+  text-align: center;
+  margin: 0;
+}
+
+footer a {
+  text-decoration: none;
+  color: hotpink;
+}
+
+footer a:hover {
+  text-decoration: none;
+  color: teal;
+}
+/* Hide scrollbar for Chrome, Safari and Opera */
+ .hide-scroll::-webkit-scrollbar {
+  display: none;
+} 
+
+/* Hide scrollbar for IE, Edge and Firefox */
+html {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  scroll-behavior: smooth;
+}
+/* .parallax-remove-scrollbar {
+	-webkit-scrollbar-display: none !important;
+	scrollbar-width: 0 !important;
+
+} */
