@@ -1,4 +1,4 @@
-#app { height: 100% }
+#Slider { height: 100% }
 html,
 body {
   position: relative;
@@ -25,7 +25,7 @@ body {
   color: #fff;
   background: rgba(255, 255, 255, 0);
 
-  /* Center slide text vertically */
+
   display: -webkit-box;
   display: -ms-flexbox;
   display: -webkit-flex;

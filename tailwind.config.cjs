@@ -4,11 +4,7 @@ const Form = require('@tailwindcss/forms');
 const daisyui = require('daisyui');
 
 module.exports = {
-    content: [
-        './index.html',
-        './src/**/*.{js,ts,jsx,tsx}',
-        'node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}',
-    ],
+    content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
     darkMode: 'class',
     theme: {
         extend: {

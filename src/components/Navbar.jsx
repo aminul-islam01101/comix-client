@@ -16,7 +16,6 @@ const Navbar = () => {
         { pageName: 'Home', link: '/', id: 1 },
         { pageName: 'Comix', link: '/products', id: 2 },
         { pageName: 'Meet-Up', link: '/meetup', id: 3 },
-       
     ];
 
     const handleClick = () => {
