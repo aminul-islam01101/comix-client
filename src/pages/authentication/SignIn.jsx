@@ -1,7 +1,10 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable no-shadow */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 
 import { useContext, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import { FaGithub } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
@@ -9,44 +12,33 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import AuthContext from '../../Contexts/AuthContext';
 
 const Login = () => {
-    const [input, setInput] = useState({
-        email: '',
-        password: '',
-    });
-    const [error, setError] = useState(null);
-
+    const [error, setError] = useState('');
+    const {
+        register,
+        formState: { errors },
+        handleSubmit,
+        getValues,
+    } = useForm({ mode: 'onChange' });
     const { signIn, sendPassResetEmail, setLoading, googleSignIn, githubSignIn } =
         useContext(AuthContext);
-    const { email, password } = input;
+    const { email } = getValues();
+
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || '/';
 
-    const onFieldChange = (event) => {
-        const { value } = event.target;
-
-        setInput({ ...input, [event.target.name]: value });
-    };
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const form = event.target;
-
-        signIn(email, password)
+    const onSubmit = (data) => {
+        console.log(data);
+        setError('');
+        signIn(data.email, data.password)
             .then((result) => {
                 const { user } = result;
                 console.log(user);
-                form.reset();
-                setError('');
-                user.emailVerified
-                    ? navigate(from, { replace: true })
-                    : toast.error('Please verify your email address.');
+                navigate(from, { replace: true });
             })
             .catch((error) => {
-                console.error(error);
+                console.log(error.message);
                 setError(error.message);
-            })
-            .finally(() => {
-                setLoading(false);
             });
     };
     const handleForgetPass = () => {
@@ -95,46 +87,49 @@ const Login = () => {
     };
 
     return (
-        <div className="grid min-h-90v place-items-center my-36 ">
+        <div className="grid min-h-90v place-items-center  ">
             <h2 className="text-xl text-rose-600 font-bold my-10">{error}</h2>
             <div className="w-full max-w-md space-y-3 rounded-xl p-8 bg-slate-300 dark:bg-gray-900 dark:text-gray-100">
                 <h1 className="text-center text-2xl font-bold">Login</h1>
                 <form
-                    onSubmit={handleSubmit}
+                    onSubmit={handleSubmit(onSubmit)}
                     className="ng-untouched ng-pristine ng-valid space-y-6"
                 >
-                    <div className="space-y-1 text-sm">
-                        <label htmlFor="username" className="block dark:text-gray-400">
-                            email
-                            <input
-                                onChange={onFieldChange}
-                                type="email"
-                                name="email"
-                                id="email"
-                                placeholder="write your email"
-                                className="w-full rounded-md px-4 py-3 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 focus:dark:border-violet-400"
-                                required
-                            />
+                    <div className="form-control w-full">
+                        <label className="label">
+                            <span className="label-text">Email</span>
                         </label>
+                        <input
+                            type="text"
+                            {...register('email', {
+                                required: 'Email Address is required',
+                            })}
+                            className="input input-bordered w-full "
+                        />
+                        {errors.email && <p className="text-red-600">{errors.email?.message}</p>}
                     </div>
-                    <div className="space-y-1 text-sm">
-                        <label htmlFor="password" className="block dark:text-gray-400">
-                            Password
-                            <input
-                                onChange={onFieldChange}
-                                type="password"
-                                name="password"
-                                id="password"
-                                placeholder="Password"
-                                className="w-full rounded-md px-4 py-3 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 focus:dark:border-violet-400"
-                                required
-                            />
+                    <div className="form-control w-full ">
+                        <label className="label">
+                            <span className="label-text">Password</span>
                         </label>
+                        <input
+                            type="password"
+                            {...register('password', {
+                                required: 'Password is required',
+                                minLength: {
+                                    value: 6,
+                                    message: 'Password must be 6 characters or longer',
+                                },
+                            })}
+                            className="input input-bordered w-full "
+                        />
+                        {errors.password && (
+                            <p className="text-red-600">{errors.password?.message}</p>
+                        )}
                     </div>
                     <div className="flex justify-end text-xs dark:text-gray-400">
                         Forgot Password?
                         <button type="button" className="underline" onClick={handleForgetPass}>
-                            {' '}
                             Reset
                         </button>
                     </div>

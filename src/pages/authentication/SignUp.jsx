@@ -1,55 +1,58 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
-import { Link } from 'react-router-dom';
-// import { Link, Navigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
 import AuthContext from '../../Contexts/AuthContext';
 
 const SignUp = () => {
-    const { createUser, verifyMail, updateUserProfile } = useContext(AuthContext);
+    const { createUser, updateUserProfile } = useContext(AuthContext);
+    const [error, setError] = useState('');
     const {
         register,
-
         handleSubmit,
         getValues,
-
         reset,
-
         formState: { errors },
     } = useForm({ mode: 'onChange' });
 
-    // const location = useLocation();
-    const { firstName, lastName, email, password } = getValues();
-    // const from = location.state?.from?.pathname || '/';
-    // verifyMail functionality
-    const handleVerifyMail = () => {
-        verifyMail()
-            .then(() => {})
-            .catch((e) => console.error(e));
-    };
+    const navigate = useNavigate();
+
+    //  const location = useLocation();
+    // const { firstName, lastName, email, password } = getValues();
+    const { password } = getValues();
+    //  const from = location.state?.from?.pathname || '/';
+
     // updateUserProfile functionality
-    const handleUpdateProfile = () => {
-        const profile = {
-            displayName: `${firstName} ${lastName}`,
-        };
-        updateUserProfile(profile)
-            .then(() => {})
-            .catch((err) => console.error(err));
-    };
 
     const onSubmit = (data) => {
+        const { firstName, lastName, email } = data;
+        setError('');
         createUser(email, password)
             .then((result) => {
                 const { user } = result;
                 console.log(user);
                 reset();
-                handleVerifyMail();
-                toast.success('please verifyMail');
+                const handleUpdateProfile = () => {
+                    const profile = {
+                        displayName: `${firstName} ${lastName}`,
+                    };
+                    updateUserProfile(profile)
+                        .then(() => {})
+                        .catch((err) => console.error(err));
+                };
+
+                toast.success('Signup successful');
+
                 handleUpdateProfile();
-                // user?.uid && Navigate(from, { replace: true });
+                navigate('/');
+                //  user?.uid && navigate(from, { replace: true });
             })
-            .catch((err) => console.error(err));
+            .catch((err) => {
+                console.error(err);
+                setError(err.message);
+            });
     };
 
     return (
@@ -77,11 +80,15 @@ const SignUp = () => {
                                         className="w-full px-4 py-3 rounded-md dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 focus:dark:border-violet-400"
                                     />
 
-                                    {errors?.firstName?.type === 'pattern' && (
-                                        <p>Alphabetical characters only</p>
+                                    {errors?.lastName?.type === 'pattern' && (
+                                        <p className="text-red-500">
+                                            *Alphabetical characters only
+                                        </p>
                                     )}
-                                    {errors?.firstName?.type === 'maxLength' && (
-                                        <p>First name cannot exceed 20 characters</p>
+                                    {errors?.lastName?.type === 'maxLength' && (
+                                        <p className="text-red-500">
+                                            *First name cannot exceed 20 characters
+                                        </p>
                                     )}
                                 </div>
 
@@ -98,10 +105,14 @@ const SignUp = () => {
                                     />
 
                                     {errors?.lastName?.type === 'pattern' && (
-                                        <p>Alphabetical characters only</p>
+                                        <p className="text-red-500">
+                                            *Alphabetical characters only
+                                        </p>
                                     )}
                                     {errors?.lastName?.type === 'maxLength' && (
-                                        <p>First name cannot exceed 20 characters</p>
+                                        <p className="text-red-500">
+                                            *Last name cannot exceed 20 characters
+                                        </p>
                                     )}
                                 </div>
                             </div>
@@ -137,7 +148,9 @@ const SignUp = () => {
                                 className="w-full px-4 py-3 rounded-md dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 focus:dark:border-violet-400"
                             />
                             {errors?.password?.type === 'pattern' && (
-                                <p>min 6ch , one letter, one number </p>
+                                <p className="text-red-500">
+                                    *Minimum 6 Character, include one letter and one number
+                                </p>
                             )}
                         </label>
                     </div>
@@ -155,8 +168,16 @@ const SignUp = () => {
                                 placeholder="Confirm password"
                                 className="w-full px-4 py-3 rounded-md dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 focus:dark:border-violet-400"
                             />
-                            {errors?.confirmPassword && <p>{errors?.confirmPassword?.message}</p>}
+                            {errors?.confirmPassword && (
+                                <p className="text-red-500">{errors?.confirmPassword?.message}</p>
+                            )}
                         </label>
+
+                        {error && (
+                            <h2 className="text-xl text-rose-600 font-bold my-10">
+                                *{error.split('/')[1].split(')')[0]}
+                            </h2>
+                        )}
 
                         {/* checkbox */}
                         <div className="flex items-center">

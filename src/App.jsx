@@ -18,7 +18,13 @@ const App = () => {
     return (
         <div>
             <QueryClientProvider client={client}>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense
+                    fallback={
+                        <div className="grid min-h-50v place-items-center">
+                            <div className="w-16 h-16 border-4 border-dashed rounded-full border-sky-700 animate-spin dark:border-violet-400" />
+                        </div>
+                    }
+                >
                     <RouterProvider router={router} />
                     <Toaster />
                 </Suspense>

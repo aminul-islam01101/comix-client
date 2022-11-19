@@ -12,6 +12,7 @@ import Checkout from '../pages/Products/Checkout';
 import ProductsDetail from '../pages/Products/ProductDetail';
 import PrivateRoute from './ProtectedRoute';
 import Root from './Root';
+import Dashboard from '../pages/dashboard/Dashboard';
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -28,6 +29,15 @@ const router = createBrowserRouter(
                     </PrivateRoute>
                 }
                 loader={async () => fetch('https://comix-server.vercel.app/products')}
+            />
+            <Route
+                path="/dashboard"
+                element={
+                    <PrivateRoute>
+                        <Dashboard />
+                    </PrivateRoute>
+                }
+               
             />
             <Route path="/meetup" element={<MeetUp />} />
             <Route path="/Signup" element={<SignUp />} />
