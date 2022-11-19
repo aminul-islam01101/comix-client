@@ -2,26 +2,29 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
-import { format } from 'date-fns';
 import React, { useContext } from 'react';
 
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import AuthContext from '../../Contexts/AuthContext';
 
-const MeetupModal = ({ meetings, selected, setMeetings, refetch }) => {
+const MeetupModal = ({ meetings, date, setMeetings, refetch }) => {
     const { handleSubmit, register } = useForm();
     const { user } = useContext(AuthContext);
 
     const muteFunc = async (data) => axios.post('https://comix-server.vercel.app/bookings', data);
 
     const { mutate } = useMutation(muteFunc, {
-        onSuccess: () => {
+        onSuccess: (data) => {
             setMeetings(null);
-            toast.success('Successfully posted Your Meetup bookings');
+            if (!data.data.acknowledged) {
+                toast.error(data.data.message);
+                return;
+            }
+            toast.success('Successfully booked');
             refetch();
         },
-        onError: () => toast.error('there was an error'),
+        onError: () => toast.error('There is an error'),
     });
 
     const onSubmit = (values) => {
@@ -40,11 +43,11 @@ const MeetupModal = ({ meetings, selected, setMeetings, refetch }) => {
                     </label>
                     <h3 className="text-lg font-bold">{meetings?.name}</h3>
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
-                        {selected && (
+                        {date && (
                             <input
                                 {...register('meetupDate')}
                                 type="text"
-                                defaultValue={format(selected, 'PP')}
+                                defaultValue={date}
                                 className="w-full "
                             />
                         )}

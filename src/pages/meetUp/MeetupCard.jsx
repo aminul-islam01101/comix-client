@@ -1,9 +1,8 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React from 'react';
-import { toast } from 'react-hot-toast';
 
-const MeetupOption = ({ option, setMeetings, selected }) => {
+const MeetupOption = ({ option, setMeetings }) => {
     const { name, slots } = option;
     return (
         <div>
@@ -17,39 +16,21 @@ const MeetupOption = ({ option, setMeetings, selected }) => {
                     <p>
                         {slots.length} {slots.length ? 'spaces' : 'space'} available
                     </p>
-                    {selected ? (
-                        <div className="card-actions  justify-end">
-                            <button
-                                type="button"
-                                disabled={slots.length === 0}
-                                onClick={() => setMeetings(option)}
-                                className="button disabled:bg-slate-300"
+                    <div className="card-actions  justify-end">
+                        <button
+                            type="button"
+                            disabled={slots.length === 0}
+                            onClick={() => setMeetings(option)}
+                            className="button disabled:bg-slate-300"
+                        >
+                            <label
+                                className=" cursor-pointer "
+                                htmlFor={slots.length && 'meetup-modal'}
                             >
-                                <label
-                                    className=" cursor-pointer "
-                                    htmlFor={slots.length && 'meetup-modal'}
-                                >
-                                    get meetup
-                                </label>
-                            </button>
-                        </div>
-                    ) : (
-                        <div className="card-actions  justify-end">
-                            <button
-                                type="button"
-                                disabled={slots.length === 0}
-                                onClick={() => toast.error('select a date first')}
-                                className="button disabled:bg-slate-300"
-                            >
-                                <label
-                                    className=" cursor-pointer "
-                                    htmlFor={slots.length && 'meetup-modal'}
-                                >
-                                    get meetup
-                                </label>
-                            </button>
-                        </div>
-                    )}
+                                get meetup
+                            </label>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
