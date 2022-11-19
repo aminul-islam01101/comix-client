@@ -8,18 +8,23 @@ import MeetupModal from './MeetupModal';
 
 export default function AvailableAppointments({ selected }) {
     const [meetings, setMeetings] = useState(null);
-    //     const date = format(selected, 'PP');
+    // let date;
+    // if (selected) {
+    //     date = format(selected, 'PP');
+    // }
+    const date = format(selected, 'PP');
 
-    const { data: appointmentOptions, isLoading } = useQuery(['meetupOptions'], () =>
+    const {
+        data: appointmentOptions,
+
+        refetch,
+    } = useQuery(['meetupOptions', date], () =>
         axios
-            .get('https://comix-server.vercel.app/meetupOptions')
-            //             // .get(`https://comix-server.vercel.app/meetupOptions?date=${date}`)
+            //  .get('https://comix-server.vercel.app/meetupOptions')
+            .get(`https://comix-server.vercel.app/meetupOptions?date=${date}`)
             .then((res) => res.data)
     );
-
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
+    console.log(date);
 
     let footer = <p>Select a date first</p>;
     if (selected) {
@@ -40,7 +45,12 @@ export default function AvailableAppointments({ selected }) {
                 ))}
             </div>
             {meetings && (
-                <MeetupModal meetings={meetings} setMeetings={setMeetings} selected={selected} />
+                <MeetupModal
+                    meetings={meetings}
+                    setMeetings={setMeetings}
+                    selected={selected}
+                    refetch={refetch}
+                />
             )}
         </div>
     );

@@ -9,7 +9,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import AuthContext from '../../Contexts/AuthContext';
 
-const MeetupModal = ({ meetings, selected, setMeetings }) => {
+const MeetupModal = ({ meetings, selected, setMeetings, refetch }) => {
     const { handleSubmit, register } = useForm();
     const { user } = useContext(AuthContext);
 
@@ -19,6 +19,7 @@ const MeetupModal = ({ meetings, selected, setMeetings }) => {
         onSuccess: () => {
             setMeetings(null);
             toast.success('Successfully posted Your Meetup bookings');
+            refetch();
         },
         onError: () => toast.error('there was an error'),
     });

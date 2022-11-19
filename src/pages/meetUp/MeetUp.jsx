@@ -8,7 +8,7 @@ const MeetUp = () => {
     return (
         <div>
             <MeetUpBanner selected={selected} setSelected={setSelected} />
-            <AvailableAppointments selected={selected} setSelected={setSelected} />
+            <AvailableAppointments selected={selected || new Date()} setSelected={setSelected} />
         </div>
     );
 };
