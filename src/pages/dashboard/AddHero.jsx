@@ -18,6 +18,8 @@ const AddHero = () => {
     const { data: genres } = useQuery(['genres'], () =>
         axios.get(`https://comix-server.vercel.app/genre`).then((res) => res.data)
     );
+    console.log(genres);
+    
     // Posting form data
     const muteFunc = async (data) => axios.post('https://comix-server.vercel.app/heros', data);
 
@@ -37,6 +39,8 @@ const AddHero = () => {
     } = useForm({ mode: 'onChange' });
 
     const onSubmit = (data) => {
+        console.log(data);
+        
         const image = data.photo[0];
         const formData = new FormData();
         const url = `https://api.imgbb.com/1/upload?key=${imgApI}`;
@@ -110,8 +114,8 @@ const AddHero = () => {
                             <span className="label-text">Role</span>
                         </label>
                         <select {...register('genre')} className="select select-info w-full ">
-                            {genres.map((genre) => (
-                                <option key={genre._id} value={genre}>
+                            {genres?.map((genre) => (
+                                <option key={genre._id} value={genre.genre}>
                                     {genre.genre}
                                 </option>
                             ))}
@@ -119,16 +123,14 @@ const AddHero = () => {
                     </div>
                     <div className="form-control w-full">
                         <label className="label">
-                            <span className="label-text">Email</span>
+                            <span className="label-text">photo</span>
                         </label>
                         <input
                             type="file"
-                            {...register('photo', {
-                                required: 'Email Address is required',
-                            })}
+                            {...register('photo', )}
                             className="input input-bordered w-full "
                         />
-                        {errors.photo && <p className="text-red-600">{errors.photo?.message}</p>}
+                        {/* {errors.photo && <p className="text-red-600">{errors.photo?.message}</p>} */}
                     </div>
 
                     <button type="submit" className="button w-full rounded-sm p-3 text-center">
