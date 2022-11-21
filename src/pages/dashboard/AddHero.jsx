@@ -19,7 +19,7 @@ const AddHero = () => {
         axios.get(`https://comix-server.vercel.app/genre`).then((res) => res.data)
     );
     console.log(genres);
-    
+
     // Posting form data
     const muteFunc = async (data) => axios.post('https://comix-server.vercel.app/heros', data);
 
@@ -40,7 +40,7 @@ const AddHero = () => {
 
     const onSubmit = (data) => {
         console.log(data);
-        
+
         const image = data.photo[0];
         const formData = new FormData();
         const url = `https://api.imgbb.com/1/upload?key=${imgApI}`;
@@ -127,10 +127,10 @@ const AddHero = () => {
                         </label>
                         <input
                             type="file"
-                            {...register('photo', )}
+                            {...register('photo', { required: 'Image is required' })}
                             className="input input-bordered w-full "
                         />
-                        {/* {errors.photo && <p className="text-red-600">{errors.photo?.message}</p>} */}
+                        {errors.photo && <p className="text-red-600">{errors.photo?.message}</p>}
                     </div>
 
                     <button type="submit" className="button w-full rounded-sm p-3 text-center">
