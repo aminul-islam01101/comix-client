@@ -26,11 +26,19 @@ const DashboardRoot = () => {
                         <li>
                             <Link to="/dashboard">My Meetups</Link>
                         </li>
-                        {
-                            isAdmin && <li>
-                            <Link to="/dashboard/users">All Users</Link>
-                        </li>
-                        }
+                        {isAdmin && (
+                            <>
+                                <li>
+                                    <Link to="/dashboard/users">All Users</Link>
+                                </li>
+                                <li>
+                                    <Link to="/dashboard/addhero">Add Hero</Link>
+                                </li>
+                                <li>
+                                    <Link to="/dashboard/manageheros">Manage Heros</Link>
+                                </li>
+                            </>
+                        )}
                     </ul>
                 </div>
             </div>

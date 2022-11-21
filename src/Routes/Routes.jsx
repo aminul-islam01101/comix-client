@@ -8,6 +8,7 @@ import Products from '../pages/Products/Products';
 import SignIn from '../pages/authentication/SignIn';
 import SignUp from '../pages/authentication/SignUp';
 
+import AddHero from '../pages/dashboard/AddHero';
 import AllUsers from '../pages/dashboard/AllUsers';
 import MyMeetup from '../pages/dashboard/MyMeetup';
 import MeetUp from '../pages/meetUp/MeetUp';
@@ -15,6 +16,7 @@ import Checkout from '../pages/Products/Checkout';
 import ProductsDetail from '../pages/Products/ProductDetail';
 import AdminRoute from './AdminRoute';
 import DashboardRoot from './DashboardRoot';
+import ManageHeros from './ManageHeros';
 import PrivateRoute from './ProtectedRoute';
 import Root from './Root';
 
@@ -55,6 +57,22 @@ const router = createBrowserRouter(
                     element={
                         <AdminRoute>
                             <AllUsers />
+                        </AdminRoute>
+                    }
+                />
+                <Route
+                    path="/dashboard/addhero"
+                    element={
+                        <AdminRoute>
+                            <AddHero />
+                        </AdminRoute>
+                    }
+                />
+                <Route
+                    path="/dashboard/manageheros"
+                    element={
+                        <AdminRoute>
+                            <ManageHeros />
                         </AdminRoute>
                     }
                 />
