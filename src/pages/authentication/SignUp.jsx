@@ -42,16 +42,14 @@ const SignUp = () => {
     // const { mutate } = useMutation(muteFunc);
 
     const getUserToken = (email) => {
-        if (email) {
-            fetch(`https://comix-server.vercel.app/jwt?email=${email}`)
-                .then((res) => res.json())
-                .then((data) => {
-                    if (data.accessToken) {
-                        localStorage.setItem('accessToken', data.accessToken);
-                        navigate('/');
-                    }
-                });
-        }
+        fetch(`https://comix-server.vercel.app/jwt?email=${email}`)
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.accessToken) {
+                    localStorage.setItem('accessToken', data.accessToken);
+                    navigate('/');
+                }
+            });
     };
 
     const saveUser = (email, name) => {
@@ -86,7 +84,7 @@ const SignUp = () => {
                     updateUserProfile(profile)
                         .then(() => {
                             // mutate({ email, userName: profile.displayName });
-                           saveUser(email, profile.displayName);
+                            saveUser(email, profile.displayName);
                         })
 
                         .catch((err) => console.error(err));
@@ -95,7 +93,6 @@ const SignUp = () => {
                 toast.success('Signup successful');
 
                 handleUpdateProfile();
-        
 
                 //  user?.uid && navigate(from, { replace: true });
             })
