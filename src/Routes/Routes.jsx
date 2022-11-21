@@ -19,6 +19,7 @@ import DashboardRoot from './DashboardRoot';
 import ManageHeros from './ManageHeros';
 import PrivateRoute from './ProtectedRoute';
 import Root from './Root';
+import Payment from '../pages/dashboard/Payment';
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -73,6 +74,14 @@ const router = createBrowserRouter(
                     element={
                         <AdminRoute>
                             <ManageHeros />
+                        </AdminRoute>
+                    }
+                />
+                <Route
+                    path="/dashboard/payment/:id"
+                    element={
+                        <AdminRoute>
+                            <Payment />
                         </AdminRoute>
                     }
                 />

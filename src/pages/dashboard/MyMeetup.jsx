@@ -2,6 +2,7 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
 import AuthContext from '../../Contexts/AuthContext';
 
 const MyMeetup = () => {
@@ -9,7 +10,7 @@ const MyMeetup = () => {
     const { data: myMeetups } = useQuery(['myMeetup'], () =>
         axios
             .get(`https://comix-server.vercel.app/bookings?email=${user?.email}`, {
-            // .get(`http://localhost:5000/bookings?email=${user?.email}`, {
+                // .get(`http://localhost:5000/bookings?email=${user?.email}`, {
                 headers: {
                     authorization: `bearer ${localStorage.getItem('accessToken')}`,
                 },
@@ -27,6 +28,7 @@ const MyMeetup = () => {
                             <th>Hero Name</th>
                             <th>Date</th>
                             <th>Time</th>
+                            <th>Payment</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -39,6 +41,22 @@ const MyMeetup = () => {
                                 <td className="py-2 px-4">{myMeetup?.heroName}</td>
                                 <td>{myMeetup?.meetupDate}</td>
                                 <td>{myMeetup?.timeSlot}</td>
+                                <td>
+                                    {' '}
+                                    {myMeetup.price && !myMeetup.paid && (
+                                        <Link to={`/dashboard/payment/${myMeetup._id}`}>
+                                            <button
+                                                type="button"
+                                                className="btn btn-primary btn-sm"
+                                            >
+                                                Pay
+                                            </button>
+                                        </Link>
+                                    )}
+                                    {myMeetup.price && myMeetup.paid && (
+                                        <span className="text-green-500">Paid</span>
+                                    )}
+                                </td>
                             </tr>
                         ))}
                     </tbody>

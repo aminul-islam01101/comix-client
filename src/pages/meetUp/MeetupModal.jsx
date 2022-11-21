@@ -28,7 +28,7 @@ const MeetupModal = ({ meetings, date, setMeetings, refetch }) => {
     });
 
     const onSubmit = (values) => {
-        mutate({ ...values, heroName: meetings?.name });
+        mutate({ ...values, heroName: meetings?.name, price: meetings?.price });
     };
     return (
         <div>

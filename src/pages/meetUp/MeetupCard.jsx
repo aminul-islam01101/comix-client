@@ -1,9 +1,10 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React from 'react';
+import formatCurrency from '../../Utilities/FormateCurrency';
 
 const MeetupOption = ({ option, setMeetings }) => {
-    const { name, slots } = option;
+    const { name, slots, price } = option;
     return (
         <div>
             <div className="card w-full bg-base-100 shadow-xl image-full">
@@ -16,6 +17,7 @@ const MeetupOption = ({ option, setMeetings }) => {
                     <p>
                         {slots.length} {slots.length ? 'spaces' : 'space'} available
                     </p>
+                    <p>Entree Fee {formatCurrency(price)}</p>
                     <div className="card-actions  justify-end">
                         <button
                             type="button"
