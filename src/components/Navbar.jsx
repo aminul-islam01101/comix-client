@@ -212,6 +212,28 @@ const Navbar = () => {
                                 <div className="absolute inset-y-0 left-0 w-3 h-3 m-1 rounded-full shadow peer-checked:right-0 peer-checked:left-auto bg-gray-800 dark:bg-gray-800"></div>
                             </span>
                         </label>
+
+                        {/* dashboard opener button */}
+                        <label
+                            htmlFor="dashboardOpener"
+                            tabIndex={0}
+                            className="btn btn-ghost lg:hidden"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-5 w-5"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M4 6h16M4 12h8m-8 6h16"
+                                />
+                            </svg>
+                        </label>
                     </div>
                 </div>
             </div>

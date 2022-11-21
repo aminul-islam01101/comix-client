@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -5,10 +6,16 @@ import { toast } from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
 
 import AuthContext from '../../Contexts/AuthContext';
+import useToken from '../../hooks/useToken';
+// import SaveUser from './components/SaveUser';
 
 const SignUp = () => {
     const { createUser, updateUserProfile } = useContext(AuthContext);
     const [error, setError] = useState('');
+    const [userEmail, setUserEmail] = useState('');
+    const [token] = useToken(userEmail);
+    const navigate = useNavigate();
+
     const {
         register,
         handleSubmit,
@@ -16,18 +23,56 @@ const SignUp = () => {
         reset,
         formState: { errors },
     } = useForm({ mode: 'onChange' });
+    const { password, email } = getValues();
+    // console.log(token);
 
-    const navigate = useNavigate();
+    // if (token) {
+    //     navigate('/');
+    // }
 
     //  const location = useLocation();
     // const { firstName, lastName, email, password } = getValues();
-    const { password } = getValues();
+
     //  const from = location.state?.from?.pathname || '/';
 
     // updateUserProfile functionality
 
+    // users data posting to database
+    // const muteFunc = async (data) => axios.post('https://comix-server.vercel.app/users', data);
+    // const { mutate } = useMutation(muteFunc);
+
+    const getUserToken = (email) => {
+        if (email) {
+            fetch(`https://comix-server.vercel.app/jwt?email=${email}`)
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data.accessToken) {
+                        localStorage.setItem('accessToken', data.accessToken);
+                        navigate('/');
+                    }
+                });
+        }
+    };
+
+    const saveUser = (email, name) => {
+        const user = { name, email };
+        fetch('https://comix-server.vercel.app/users', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+            },
+            body: JSON.stringify(user),
+        })
+            .then((res) => res.json())
+            .then(() => {
+                getUserToken(email);
+            });
+    };
+
+    // jwt verify
+
     const onSubmit = (data) => {
-        const { firstName, lastName, email } = data;
+        const { firstName, lastName } = data;
         setError('');
         createUser(email, password)
             .then((result) => {
@@ -39,14 +84,19 @@ const SignUp = () => {
                         displayName: `${firstName} ${lastName}`,
                     };
                     updateUserProfile(profile)
-                        .then(() => {})
+                        .then(() => {
+                            // mutate({ email, userName: profile.displayName });
+                           saveUser(email, profile.displayName);
+                        })
+
                         .catch((err) => console.error(err));
                 };
 
                 toast.success('Signup successful');
 
                 handleUpdateProfile();
-                navigate('/');
+        
+
                 //  user?.uid && navigate(from, { replace: true });
             })
             .catch((err) => {

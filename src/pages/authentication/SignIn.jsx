@@ -8,11 +8,15 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import { FaGithub } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
+
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import AuthContext from '../../Contexts/AuthContext';
+// import SaveUser from './components/SaveUser';
 
 const Login = () => {
     const [error, setError] = useState('');
+    const [UserEmail, setUserEmail] = useState('');
+    const [token, setToken] = useState('');
     const {
         register,
         formState: { errors },
@@ -25,17 +29,53 @@ const Login = () => {
 
     const navigate = useNavigate();
     const location = useLocation();
+
+    // const [token] = useToken(UserEmail);
     const from = location.state?.from?.pathname || '/';
 
+    // if (token) {
+    //     navigate(from, { replace: true });
+    // }
+    // const getUserToken = (email) => {
+    //     if (email) {
+    //         fetch(`https://comix-server.vercel.app/jwt?email=${email}`)
+    //             .then((res) => res.json())
+    //             .then((data) => {
+    //                 if (data?.accessToken) {
+    //                     localStorage.setItem('accessToken', data.accessToken);
+    //                     setToken(data?.accessToken);
+    //                 }
+    //             });
+    //     }
+    // };
+    // const saveUser = (email, name) => {
+    //     const user = { name, email };
+    //     fetch('https://comix-server.vercel.app/users', {
+    //         method: 'POST',
+    //         headers: {
+    //             'content-type': 'application/json',
+    //         },
+    //         body: JSON.stringify(user),
+    //     })
+    //         .then((res) => res.json())
+    //         .then(() => {
+    //             getUserToken(email);
+    //         });
+    // };
     const onSubmit = (data) => {
         console.log(data);
         setError('');
-        signIn(data.email, data.password)
+        signIn(data?.email, data?.password)
             .then((result) => {
                 const { user } = result;
                 console.log(user);
-                navigate(from, { replace: true });
+                // getUserToken(data.email)
+                // setUserEmail(data.email);
+          navigate(from, { replace: true });
+
+                // setUserEmail(data?.email);
             })
+
             .catch((error) => {
                 console.log(error.message);
                 setError(error.message);
@@ -59,9 +99,12 @@ const Login = () => {
         googleSignIn()
             .then((result) => {
                 const { user } = result;
-
-                user.emailVerified && navigate(from, { replace: true });
+                console.log(user);
+                user?.uid && navigate(from, { replace: true });
+                // saveUser(user.email, user.displayName);
+                // setUserEmail(user?.email);
             })
+
             .catch((errors) => {
                 console.error(errors);
             })
