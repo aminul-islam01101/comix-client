@@ -5,24 +5,39 @@ import React from 'react';
 import { toast } from 'react-hot-toast';
 
 const AllUsers = () => {
-    const { data: users, refetch }= useQuery(['users'], () =>
+    const { data: users = [], refetch } = useQuery(['users'], () =>
         axios.get('https://comix-server.vercel.app/users').then((res) => res.data)
     );
     const handleClick = (id) => {
-        axios
-            .put(`https://comix-server.vercel.app/users/admin/${id}`, {
-                headers: {
-                    authorization: `bearer ${localStorage.getItem('accessToken')}`,
-                },
-            })
-
-            .then((res) => {
-                if (res.data.modifiedCount) {
+        fetch(`https://comix-server.vercel.app/users/admin/${id}`, {
+            method: 'PUT',
+            headers: {
+                authorization: `bearer ${localStorage.getItem('accessToken')}`,
+            },
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.modifiedCount > 0) {
                     toast.success('Make admin successful.');
                     refetch();
                 }
             });
     };
+    // const handleClick = (id) => {
+    //     axios
+    //         .put(`https://comix-server.vercel.app/users/admin/${id}`, {
+    //             headers: {
+    //                 authorization: `bearer ${localStorage.getItem('accessToken')}`,
+    //             },
+    //         })
+
+    //         .then((res) => {
+    //             if (res.data.modifiedCount) {
+    //                 toast.success('Make admin successful.');
+    //                 refetch();
+    //             }
+    //         });
+    // };
 
     return (
         <div className="container">

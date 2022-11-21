@@ -13,6 +13,7 @@ import MyMeetup from '../pages/dashboard/MyMeetup';
 import MeetUp from '../pages/meetUp/MeetUp';
 import Checkout from '../pages/Products/Checkout';
 import ProductsDetail from '../pages/Products/ProductDetail';
+import AdminRoute from './AdminRoute';
 import DashboardRoot from './DashboardRoot';
 import PrivateRoute from './ProtectedRoute';
 import Root from './Root';
@@ -49,7 +50,14 @@ const router = createBrowserRouter(
                 }
             >
                 <Route path="/dashboard" element={<MyMeetup />} />
-                <Route path="/dashboard/users" element={<AllUsers />} />
+                <Route
+                    path="/dashboard/users"
+                    element={
+                        <AdminRoute>
+                            <AllUsers />
+                        </AdminRoute>
+                    }
+                />
             </Route>
         </>
     )
