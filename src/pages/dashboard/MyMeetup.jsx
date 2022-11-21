@@ -9,7 +9,7 @@ const MyMeetup = () => {
     const { data: myMeetups } = useQuery(['myMeetup'], () =>
         axios
             .get(`https://comix-server.vercel.app/bookings?email=${user?.email}`, {
-            //  .get(`http://localhost:5000/bookings?email=${user?.email}`, {
+            // .get(`http://localhost:5000/bookings?email=${user?.email}`, {
                 headers: {
                     authorization: `bearer ${localStorage.getItem('accessToken')}`,
                 },
