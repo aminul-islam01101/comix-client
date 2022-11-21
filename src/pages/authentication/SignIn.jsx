@@ -34,34 +34,35 @@ const Login = () => {
     const from = location.state?.from?.pathname || '/';
 
     // if (token) {
-    //     navigate(from, { replace: true });
+       
     // }
-    // const getUserToken = (email) => {
-    //     if (email) {
-    //         fetch(`https://comix-server.vercel.app/jwt?email=${email}`)
-    //             .then((res) => res.json())
-    //             .then((data) => {
-    //                 if (data?.accessToken) {
-    //                     localStorage.setItem('accessToken', data.accessToken);
-    //                     setToken(data?.accessToken);
-    //                 }
-    //             });
-    //     }
-    // };
-    // const saveUser = (email, name) => {
-    //     const user = { name, email };
-    //     fetch('https://comix-server.vercel.app/users', {
-    //         method: 'POST',
-    //         headers: {
-    //             'content-type': 'application/json',
-    //         },
-    //         body: JSON.stringify(user),
-    //     })
-    //         .then((res) => res.json())
-    //         .then(() => {
-    //             getUserToken(email);
-    //         });
-    // };
+    const getUserToken = (email) => {
+        if (email) {
+            fetch(`https://comix-server.vercel.app/jwt?email=${email}`)
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data?.accessToken) {
+                        localStorage.setItem('accessToken', data.accessToken);
+                        // setToken(data?.accessToken);
+                        navigate(from, { replace: true });
+                    }
+                });
+        }
+    };
+    const saveUser = (email, name) => {
+        const user = { name, email };
+        fetch('https://comix-server.vercel.app/users', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+            },
+            body: JSON.stringify(user),
+        })
+            .then((res) => res.json())
+            .then(() => {
+                getUserToken(email);
+            });
+    };
     const onSubmit = (data) => {
         console.log(data);
         setError('');
@@ -69,9 +70,9 @@ const Login = () => {
             .then((result) => {
                 const { user } = result;
                 console.log(user);
-                // getUserToken(data.email)
+                 getUserToken(data.email)
                 // setUserEmail(data.email);
-          navigate(from, { replace: true });
+        //   navigate(from, { replace: true });
 
                 // setUserEmail(data?.email);
             })
@@ -101,7 +102,7 @@ const Login = () => {
                 const { user } = result;
                 console.log(user);
                 user?.uid && navigate(from, { replace: true });
-                // saveUser(user.email, user.displayName);
+                 saveUser(user.email, user.displayName);
                 // setUserEmail(user?.email);
             })
 
