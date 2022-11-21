@@ -15,8 +15,8 @@ import AuthContext from '../../Contexts/AuthContext';
 
 const Login = () => {
     const [error, setError] = useState('');
-    const [UserEmail, setUserEmail] = useState('');
-    const [token, setToken] = useState('');
+    // const [UserEmail, setUserEmail] = useState('');
+    // const [token, setToken] = useState('');
     const {
         register,
         formState: { errors },

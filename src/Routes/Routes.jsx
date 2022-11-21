@@ -8,13 +8,14 @@ import Products from '../pages/Products/Products';
 import SignIn from '../pages/authentication/SignIn';
 import SignUp from '../pages/authentication/SignUp';
 
+import AllUsers from '../pages/dashboard/AllUsers';
+import MyMeetup from '../pages/dashboard/MyMeetup';
 import MeetUp from '../pages/meetUp/MeetUp';
 import Checkout from '../pages/Products/Checkout';
 import ProductsDetail from '../pages/Products/ProductDetail';
 import DashboardRoot from './DashboardRoot';
 import PrivateRoute from './ProtectedRoute';
 import Root from './Root';
-import MyMeetup from '../pages/dashboard/MyMeetup';
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -48,6 +49,7 @@ const router = createBrowserRouter(
                 }
             >
                 <Route path="/dashboard" element={<MyMeetup />} />
+                <Route path="/dashboard/users" element={<AllUsers />} />
             </Route>
         </>
     )
